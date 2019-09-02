@@ -1,4 +1,4 @@
-set_generator buffalo
+set_generator buffalo --flag=no-git
 
 del_project cookies
 
@@ -10,3 +10,5 @@ gen_model type topping_id:id
 gen_model topping name:string
 
 gen_action bake
+
+end_generator

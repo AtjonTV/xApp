@@ -17,6 +17,26 @@ Example:
 set_generator buffalo --flag=no-git
 ```
 
+## Set Flags (REQUIRES rel_flags TO BE CALLED AFTER)
+
+Command:
+```
+set_flag <flag>
+```
+
+Example:
+
+```
+set_flag no-git
+```
+
+## Update Flags
+
+Command:
+```
+rel_flags
+```
+
 ## Generate new Project
 
 Command:

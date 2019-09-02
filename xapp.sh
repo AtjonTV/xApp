@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "[xApp] (Go Buffalo) Generation Language v1.1 by ATVG-Studios"
+echo "[xApp] (Go Buffalo) Generation Language v1.2 by ATVG-Studios"
 
 SCRIPT=""
 FLAGS=""
@@ -25,6 +25,12 @@ function _buffalo_new() {
     else
         GENERATOR_NEW="new $1 --$2 --ci-provider $3 --db-type $4"
     fi
+
+    _flags "no-git" && GENERATOR_NEW="$GENERATOR_NEW --vcs none"
+}
+
+function _flags() {
+     _contains "$FLAGS" "--flag=$1" && return 0 || return 1
 }
 
 function _contains() {
@@ -32,7 +38,7 @@ function _contains() {
 }
 
 function _git_commit() {
-    _contains "$FLAGS" "--flag=no-git" && return
+    _flags "no-git" && return
 
     command -v git >/dev/null 2>&1 || { echo "Cannot find git! Please install Git or use 'set_generator <name> --flag=no-git'"; exit 1; }
 
@@ -52,6 +58,10 @@ function generator() {
 function set_generator() {
     GENERATOR="$1"
 
+    for flag in "${@:2}"; do
+        FLAGS="$FLAGS $flag"
+    done
+
     if [ "$GENERATOR" = "buffalo" ]
     then
         command -v buffalo >/dev/null 2>&1 || { echo >&2 "In order to use buffalo, buffalo is required! Cannot find buffalo in PATH! Aborting."; exit 1; }
@@ -63,23 +73,32 @@ function set_generator() {
         GENERATOR_MODEL="db g m"
         GENERATOR_MAILER="g mailer"
         GENERATOR_TASK="g t"
-	ARGS="--skip-templates"
-	ACTION_ARGS="--skip-template"
-    fi
 
-    for flag in "${@:2}"; do
-        FLAGS="$FLAGS $flag"
-    done
+        rel_flags
+    fi
 }
 
-function end_generator() {
-    echo "[xApp] Generation Script '$SCRIPT' ended."
-    cd ..
+function add_flag() {
+    _flags $1 && return
 
-    echo "[xApp] Copying '$SCRIPT' to '$APP'"
-    cp $SCRIPT $APP
+    FLAGS="$FLAGS --flag=$1"
+}
 
-    _git_commit
+function rel_flags() {
+    ARGS=""
+    ACTION_ARGS=""
+
+
+    if [ "$GENERATOR" = "buffalo" ]; then
+        _flags "no-templates" && {
+            ARGS="$ARGS --skip-templates"
+            ACTION_ARGS="$ACTION_ARGS --skip-template"
+        }
+
+        _flags "no-migrations" && {
+            ARGS="$ARGS --skip-migration"
+        }
+    fi
 }
 
 function gen_project() {
@@ -128,6 +147,16 @@ function del_project() {
     if [ -e $1 ]; then
         rm -rf $1
     fi
+}
+
+function end_generator() {
+    echo "[xApp] Generation Script '$SCRIPT' ended."
+    cd ..
+
+    echo "[xApp] Copying '$SCRIPT' to '$APP'"
+    cp $SCRIPT $APP
+
+    _git_commit
 }
 
 if [ "$1" = "" ]; then
