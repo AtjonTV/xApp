@@ -4,17 +4,17 @@ Created by: Thomas Obernosterer
 Created for: ATVG-Studios  
 License: [OSPL20](https://atvg-studios.com/ospl/ospl20) (MPL Like)
 
-## Set Generator
+## Set Generator (REQUIRED)
 
 Command:
 ```
-set_generator <name>
+set_generator <name> <flags>
 ```
 
 Example:
 
 ```
-set_generator buffalo
+set_generator buffalo --flag=no-git
 ```
 
 ## Generate new Project
@@ -115,7 +115,7 @@ del_project cookies
 ```
 
 
-## End Generator
+## End Generator (REQUIRED)
 
 Command:
 ```

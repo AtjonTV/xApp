@@ -1,7 +1,9 @@
 #!/bin/bash
 
-echo "[xApp] (Go Buffalo) Generation Language v1.0 by ATVG-Studios"
+echo "[xApp] (Go Buffalo) Generation Language v1.1 by ATVG-Studios"
 
+SCRIPT=""
+FLAGS=""
 APP=""
 ARGS=""
 ACTION_ARGS=""
@@ -23,6 +25,22 @@ function _buffalo_new() {
     else
         GENERATOR_NEW="new $1 --$2 --ci-provider $3 --db-type $4"
     fi
+}
+
+function _contains() {
+    [[ $1 =~ (^|[[:space:]])$2($|[[:space:]]) ]] && return 0 || return 1
+}
+
+function _git_commit() {
+    _contains "$FLAGS" "--flag=no-git" && return
+
+    command -v git >/dev/null 2>&1 || { echo "Cannot find git! Please install Git or use 'set_generator <name> --flag=no-git'"; exit 1; }
+
+    cd $APP
+
+    echo "[xApp] Commiting to Git (disable by adding '--flag=no-git' to 'set_generator <name')"
+    git add -A;
+    git commit -m "xApp: Finished automated generation";
 }
 
 function generator() {
@@ -48,10 +66,20 @@ function set_generator() {
 	ARGS="--skip-templates"
 	ACTION_ARGS="--skip-template"
     fi
+
+    for flag in "${@:2}"; do
+        FLAGS="$FLAGS $flag"
+    done
 }
 
 function end_generator() {
-    git commit -m "xApp: Finished automated generation"
+    echo "[xApp] Generation Script '$SCRIPT' ended."
+    cd ..
+
+    echo "[xApp] Copying '$SCRIPT' to '$APP'"
+    cp $SCRIPT $APP
+
+    _git_commit
 }
 
 function gen_project() {
@@ -102,12 +130,13 @@ function del_project() {
     fi
 }
 
-source $@
-
-echo "[xApp] Generation Script '$1' ended."
-cd ..
-
-echo "[xApp] Copying '$1' to '$APP'"
-cp $1 $APP
+if [ "$1" = "" ]; then
+    echo "[xApp] Please specify atleast one .xapp definition"
+else
+    for xapp in "$@"; do
+        SCRIPT="$1"
+        source $1
+    done
+fi
 
 echo "[xApp] Finished."
