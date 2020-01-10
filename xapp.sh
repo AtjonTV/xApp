@@ -44,7 +44,7 @@ function _git_commit() {
 
     cd $APP
 
-    echo "[xApp] Commiting to Git (disable by adding '--flag=no-git' to 'set_generator <name')"
+    echo "[xApp] Commiting to Git"
     git add -A;
     git commit -m "xApp: Finished automated generation";
 }
