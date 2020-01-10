@@ -1,4 +1,8 @@
-set_generator buffalo --flag=no-git
+set_generator buffalo
+
+add_flag no-git
+add_flag no-templates
+rel_flags
 
 del_project cookies
 
