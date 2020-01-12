@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "[xApp] (Go Buffalo) Generation Language v1.2 by ATVG-Studios"
+echo "[xApp] Project Generation Language v2.0.0 by ATVG-Studios"
 
 SCRIPT=""
 FLAGS=""
@@ -16,7 +16,8 @@ GENERATOR_MODEL=""
 GENERATOR_MAILER=""
 GENERATOR_TASK=""
 
-function _buffalo_new() {
+# MODULE: Buffalo
+function _gen_buffalo_new() {
     if [ "$2" = "app" ]
     then
         GENERATOR_NEW="new $1 --ci-provider $3 --db-type $4"
@@ -28,6 +29,51 @@ function _buffalo_new() {
 
     _flags "no-git" && GENERATOR_NEW="$GENERATOR_NEW --vcs none"
 }
+
+function _gen_buffalo_init() {
+    command -v buffalo >/dev/null 2>&1 || { echo >&2 "In order to use $GENERATOR, $GENERATOR is required! Cannot find $GENERATOR in PATH! Aborting."; exit 1; }
+    command -v buffalo-pop >/dev/null 2>&1 || { echo >&2 "In order to use $GENERATOR, $GENERATOR-pop is required! Cannot find $GENERATOR-pop in PATH!  Aborting."; exit 1; }
+
+    GENERATOR_NEW=""
+    GENERATOR_RESOURCE="g r"
+    GENERATOR_ACTION="g a"
+    GENERATOR_MODEL="db g m"
+    GENERATOR_MAILER="g mailer"
+    GENERATOR_TASK="g t"
+
+    rel_flags
+}
+# MODULE END
+
+# MODULE: Rails
+function _gen_rails_new() {
+    if [ "$2" = "api" ]
+    then
+        GENERATOR_NEW="new $1 --database=$3 --api"
+        ARGS=""
+        ACTION_ARGS=""
+    else
+        GENERATOR_NEW="new $1 --database=$3"
+    fi
+
+    _flags "no-git" && GENERATOR_NEW="$GENERATOR_NEW --skip-git"
+    _flags "no-coffee" && GENERATOR_NEW="$GENERATOR_NEW --skip-coffee"
+    _flags "no-js" && GENERATOR_NEW="$GENERATOR_NEW --skip-javascript"
+}
+
+function _gen_rails_init() {
+    command -v rails >/dev/null 2>&1 || { echo >&2 "In order to use $GENERATOR, $GENERATOR is required! Cannot find $GENERATOR in PATH! Aborting."; exit 1; }
+
+    GENERATOR_NEW=""
+    GENERATOR_RESOURCE="g resource"
+    GENERATOR_ACTION="g controller"
+    GENERATOR_MODEL="g model"
+    GENERATOR_MAILER="g mailer"
+    GENERATOR_TASK="g task"
+
+    rel_flags
+}
+# MODULE END
 
 function _flags() {
      _contains "$FLAGS" "--flag=$1" && return 0 || return 1
@@ -62,19 +108,12 @@ function set_generator() {
         FLAGS="$FLAGS $flag"
     done
 
-    if [ "$GENERATOR" = "buffalo" ]
-    then
-        command -v buffalo >/dev/null 2>&1 || { echo >&2 "In order to use buffalo, buffalo is required! Cannot find buffalo in PATH! Aborting."; exit 1; }
-        command -v buffalo-pop >/dev/null 2>&1 || { echo >&2 "In order to use buffalo, buffalo-pop is required! Cannot find buffalo-pop in PATH!  Aborting."; exit 1; }
+    if [ "$GENERATOR" = "buffalo" ]; then
+        _gen_buffalo_init
+    fi
 
-        GENERATOR_NEW=""
-        GENERATOR_RESOURCE="g r"
-        GENERATOR_ACTION="g a"
-        GENERATOR_MODEL="db g m"
-        GENERATOR_MAILER="g mailer"
-        GENERATOR_TASK="g t"
-
-        rel_flags
+    if [ "$GENERATOR" = "rails" ]; then
+        _gen_rails_init
     fi
 }
 
@@ -103,7 +142,11 @@ function rel_flags() {
 
 function gen_project() {
     if [ "$GENERATOR" = "buffalo" ]; then
-        _buffalo_new $@
+        _gen_buffalo_new $@
+    fi
+
+    if [ "$GENERATOR" = "rails" ]; then
+        _gen_rails_new $@
     fi
 
     generator $GENERATOR_NEW
@@ -161,6 +204,8 @@ function end_generator() {
 
 if [ "$1" = "" ]; then
     echo "[xApp] Please specify atleast one .xapp definition"
+    echo ""
+    echo "[xApp] Available Generators: buffalo, rails"
 else
     for xapp in "$@"; do
         SCRIPT="$1"

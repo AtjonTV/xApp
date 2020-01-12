@@ -17,6 +17,13 @@ Example:
 set_generator buffalo --flag=no-git
 ```
 
+#### Available Generators
+
+| Name | Since |
+|------|-------|
+| Buffalo | 1.0 |
+| Rails | 2.0 |
+
 ## Set Flags (REQUIRES rel_flags TO BE CALLED AFTER)
 
 Command:

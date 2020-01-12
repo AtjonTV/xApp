@@ -1,0 +1,17 @@
+set_generator rails
+
+add_flag no-git
+rel_flags
+
+del_project cookies
+
+gen_project cookies api mysql
+
+gen_resource cookie name:string type_id:int
+
+gen_model type topping_id:id
+gen_model topping name:string
+
+gen_action bake
+
+end_generator
