@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "[xApp] Project Generation Language v2.0.0 by ATVG-Studios"
+echo "[xApp] Project Generation Language v2.1.0 by ATVG-Studios"
 
 SCRIPT=""
 FLAGS=""
@@ -15,6 +15,7 @@ GENERATOR_ACTION=""
 GENERATOR_MODEL=""
 GENERATOR_MAILER=""
 GENERATOR_TASK=""
+GENERATOR_MIGRATION=""
 
 # MODULE: Buffalo
 function _gen_buffalo_new() {
@@ -40,6 +41,7 @@ function _gen_buffalo_init() {
     GENERATOR_MODEL="db g m"
     GENERATOR_MAILER="g mailer"
     GENERATOR_TASK="g t"
+    GENERATOR_MIGRATION="db g fizz"
 
     rel_flags
 }
@@ -70,6 +72,7 @@ function _gen_rails_init() {
     GENERATOR_MODEL="g model"
     GENERATOR_MAILER="g mailer"
     GENERATOR_TASK="g task"
+    GENERATOR_MIGRATION="g migration"
 
     rel_flags
 }
@@ -183,6 +186,12 @@ function gen_action() {
 function gen_task() {
     echo "[xApp] Generate Task: $1"
     generator $GENERATOR_TASK $@
+    sleep 2
+}
+
+function gen_migration() {
+    echo "[xApp] Generate Migration: $1"
+    generator $GENERATOR_MIGRATION $@
     sleep 2
 }
 

@@ -154,6 +154,23 @@ gen_task sync
 ```
 
 
+## Generate new Migration
+
+Command:
+```
+gen_migration <name> <generator params>
+```
+
+Example:
+
+```
+gen_migration AddTeamReferenceToUsers team_id:int
+```
+
+*Note 1*: Available Params to pass to Generator depend on Generator
+*Note 2*: Depending on the Generator, the output will differ
+
+
 ## Delete Project if exists
 
 Command:
