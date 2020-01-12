@@ -1,4 +1,4 @@
-# xApp (Go Buffalo) Generation Language v1.0
+# xApp Project Generation Language v2.0
 
 Created by: Thomas Obernosterer  
 Created for: ATVG-Studios  
@@ -37,6 +37,17 @@ Example:
 set_flag no-git
 ```
 
+#### Available Flags (Generator dependent)
+
+| Name | Generator | Since |
+|------|-----------|-------|
+| no-git | Buffalo/Rails | 1.1/2.0 |
+| no-templates | Buffalo | 1.2 |
+| no-migrations | Buffalo | 1.2 |
+| no-coffee | Rails | 2.0 |
+| no-js | Rails | 2.0 |
+
+
 ## Update Flags
 
 Command:
@@ -44,11 +55,16 @@ Command:
 rel_flags
 ```
 
+
 ## Generate new Project
 
 Command:
 ```
+# Buffalo
 gen_project <name> <type> <ci type> <db type>
+
+# Rails
+gen_project <name> <type> <db type>
 ```
 
 Example:
@@ -56,6 +72,16 @@ Example:
 ```
 gen_project cookies api gitlab-ci mysql
 ```
+
+*Note 1*: Rails does not support CI-Providers
+*Note 2*: Available Databases depend on used generator
+
+#### Available Types
+
+| Name | Generator | Since |
+|------|-----------|-------|
+| api  | Buffalo/Rails | 1.0/2.0 |
+| app  | Buffalo/Rails | 1.0/2.0 |
 
 
 ## Generate new Resource
