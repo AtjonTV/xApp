@@ -1,4 +1,4 @@
-# xApp Project Generation Language v2.0
+# xApp Project Generation Language v2.1
 
 Created by: Thomas Obernosterer  
 Created for: ATVG-Studios  
@@ -73,7 +73,7 @@ Example:
 gen_project cookies api gitlab-ci mysql
 ```
 
-*Note 1*: Rails does not support CI-Providers
+*Note 1*: Rails does not support CI-Providers  
 *Note 2*: Available Databases depend on used generator
 
 #### Available Types
@@ -167,7 +167,7 @@ Example:
 gen_migration AddTeamReferenceToUsers team_id:int
 ```
 
-*Note 1*: Available Params to pass to Generator depend on Generator
+*Note 1*: Available Params to pass to Generator depend on Generator  
 *Note 2*: Depending on the Generator, the output will differ
 
 
