@@ -10,4 +10,4 @@ xApp currently supports two Frameworks: Go-Buffalo and Ruby on Rails.
 
 ## License
 
-Licensed under the [OSPL20](/LICENSE)
+Licensed under the [MPL 2.0](/LICENSE)

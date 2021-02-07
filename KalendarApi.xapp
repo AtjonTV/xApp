@@ -1,0 +1,31 @@
+# Runner
+set_generator buffalo
+
+add_flag no-git
+add_flag no-migrations
+add_flag no-templates
+
+rel_flags
+
+# Clean
+del_project kalendar_api
+
+# Project
+gen_project kalendar_api api gitlab-ci mysql
+
+# CRUD+Models handled by API
+gen_resource appointments id:int start_date:datetime end_date:datetime appointment_type:string appointment_type_id:int state:string created_by_presenter_id:int created_by_order_id:int created_by_event_id:int executed_by_order_id:int assigned_to_presenter_id:int title:string marked_as_deleted:bool comment:text customer_id:int host_customer_id:int
+gen_resource appointment_types id:int name:string
+
+gen_resource competitions id:int name:string start_date:datetime end_date:datetime days_from_start:int sales_type_id:int points_per_recruiting:int points_per_sale:int url:string display_start:datetime display_end:datetime picture_url:string display_end_for_presenter_start:datetime admin_only:bool
+gen_resource competition_limits id:int name:string competition_id:int picture_url:string limit_sales:int limit_points:int limit_recruitments:int competition_limit_type_id:int description:string days_from_start:int selectable:bool
+gen_resource competition_limit_types id:int name:string
+gen_resource competition_limit_states id:int competition_state_id:int competition_limit_it:int achieved:bool
+gen_resource competition_states id:int presenter_id:int competition_id:int current_sales:float current_points:float current_recruitments:float registration_date:datetime comment:string
+
+gen_resource events id:int name:string start_date:datetime end_date:datetime event_type_id:int
+
+# CRUD handled by APOS
+gen_action feed
+
+end_generator
